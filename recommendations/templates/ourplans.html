@@ -1,0 +1,250 @@
+{% extends "layout.html" %}
+{% block body %}
+
+    <!-- add image in navbar and remove in small screens -->
+    <div class="container-fluid bg-primary hero-header " style="height:95px" id="hero_image"></div>
+
+
+
+{% if tbl_data %}
+<div class="bg-light rounded shadow-sm mx-3 mt-4 mb-4">
+    <h3 class="text-center py-2 text-primary"> Recommendations </h3>
+    <div id="carouselExampleControls" class="carousel">
+        <div class="carousel-inner">
+            {% for item in tbl_data %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <div class="card">
+                    <div class="img-wrapper rounded-start"><img src="/media/{{item.image_name}}" class="d-block w-100" alt="No Picture Found"> </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{item.recom_title}}</h5>
+                        <p class="card-text">{{ item.recom_details|truncatechars:100 }}</p>
+                        <form>
+                            {% csrf_token %}
+                            <button formmethod="post" formaction="/recommdirection/" name="rec_id" value="{{item.recommendation_id}}" type="submit" class="btn btn-primary">View More</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+{% endif %}
+
+
+
+<!-- Service Start-->
+{% if found == "found" %}
+<div class="container-fluid rounded py-5 bg-light mb-2" id="forts_found">
+    <div class="container py-4 bg-white rounded shadow-lg">
+        <h1 class="text-center fw-bold mb-4">Recommendation :- {{direc_data.recom_title}} </h1>
+        <p class="px-5 py-3">{{direc_data.recom_details}}</p>
+
+        <div id="output-area" class="bg-light p-4 rounded shadow-sm" style="display: '{{ display }}';">
+            <form id="generate-tour" method="post">
+                {% csrf_token %}
+
+                <!-- Forts List -->
+                <div class="row row-cols-2 row-cols-md-3 g-3 mb-4">
+                    {% for fort in fortsname %}
+                    <div class="col">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="{{ fort.1 }}" value="{{ fort.0 }}" name="selected_checkbox">
+                            <label class="form-check-label" for="{{ fort.1 }}">{{ fort.1 }}</label>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Mileage and Cost Inputs -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <label class="input-group-text" for="milage">Vehicle Mileage</label>
+                            <input type="text" id="milage" name="milage" placeholder="20" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <label class="input-group-text" for="liter">Cost Per Liter</label>
+                            <input type="text" id="liter" name="p_liter" placeholder="104.89" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Location and Submit Buttons -->
+                <div class="row justify-content-center align-items-center text-center">
+                    <div class="col-md-6 mb-3">
+                        <button id="get-user-location" type="button" class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
+                            </svg>
+                            Use Current Location
+                        </button>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <button type="submit" class="btn btn-primary rounded-pill w-100" form="generate-tour" formaction="/recommgenerateplan/" id="Submit_btn">
+                            Generate Plan
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Service End -->
+
+
+{% elif ltlg == "nolocation" %}
+    <div class="alert alert-info border-start border-info shadow-lg rounded-3 p-4 mb-4 position-relative" role="alert" id="alert">
+        <h4 class="alert-heading fw-bold text-info">No Location Found!</h4>
+        <p class="text-dark">Please click on 'Use Current Location' next time before generating the plan.</p>
+        <hr class="border-info mb-3">
+        <p class="mb-0 text-muted">We couldn't detect your location. Try again with location enabled.</p>
+    </div>
+
+    {% if fort_sel == "none" %}
+    <div class="alert alert-danger border-start border-danger shadow-lg rounded-3 p-4 mb-4 position-relative" role="alert" id="alert">
+        <h4 class="alert-heading fw-bold text-danger">No Fort Selected!</h4>
+        <p class="text-dark">Please select the forts you want to visit before generating the plan.</p>
+        <hr class="border-danger mb-3">
+        <p class="mb-0 text-muted">You must choose at least one fort to proceed with the plan.</p>
+    </div>
+    {% endif %}
+
+{% elif fort_sel == "none" %}
+    <div class="alert alert-danger border-start border-danger shadow-lg rounded-3 p-4 mb-4 position-relative" role="alert" id="alert">
+        <h4 class="alert-heading fw-bold text-danger">No Fort Selected!</h4>
+        <p class="text-dark">Please select the forts you want to visit next time before generating the plan.</p>
+        <hr class="border-danger mb-3">
+        <p class="mb-0 text-muted">Don't forget to choose your forts for the next plan generation!</p>
+    </div>
+
+
+    <!-- tried inheritance but as the start it checks if it is found and does not execute the query, goes directly to else-->
+    <!--Shown when user submits fort and personal location-->
+    {% elif triggerplan == "trigger" %}
+    <!-- Generated Travel Plan Section -->
+    <div class="container-fluid py-5 bg-light" id="generatedplan">
+        <h1 class="text-center fw-bold text-primary mb-5">Your Travel Plan is Ready!</h1>
+    
+        {% load custom_filters %}
+        <div class="row g-4">
+            {% for plan, item in info_box|zip_lists:items %}
+            <div class="col-12 col-md-6">
+                <div class="travel-card shadow-lg {% if forloop.counter|divisibleby:2 %}slide-in-left{% else %}slide-in-right{% endif %}">
+                    <div class="travel-card-body">
+                        <h5 class="text-success fw-bold mb-3">From {{ plan.0 }} to {{ plan.1 }}</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><strong>Distance:</strong> {{ plan.2 }}</li>
+                            <li class="mb-2"><strong>Travel Time:</strong> {{ plan.3 }}</li>
+                            <li class="mb-2">{{ plan.4 }}</li>
+                            <li class="mb-3">{{ plan.5 }}</li>
+                        </ul>
+                        <button 
+                            type="button" 
+                            data-item="{{ item }}" 
+                            class="btn btn-primary w-100" 
+                            onclick="showDirections(this)">
+                            Get Directions
+                        </button>
+                    </div>
+                    <div class="travel-card-footer text-white text-center">
+                        <small>Plan #{{ forloop.counter }}</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Summary Section -->
+    <div class="container-fluid py-5">
+        <div class="bg-white p-4 rounded shadow text-center">
+            <h4 class="text-primary mb-3">Total Road Trip Time: <strong>{{ total_travel_time }}</strong></h4>
+            {% if estimated_days == 1 %}
+            <h5 class="mb-3">Estimated Time to Complete Trip: <strong>{{ estimated_days }} Day</strong>.</h5>
+            {% elif estimated_days > 1 %}
+            <h5 class="mb-3">Estimated Time to Complete Trip: <strong>{{ estimated_days }} Days</strong>.</h5>
+            {% endif %}
+            <h5 class="mb-3">Fuel Requirement: <strong>{{ total_f_c.0 }} Liters</strong>.</h5>
+            <h5 class="mb-4">Travel Expense: <strong>₹{{ total_f_c.1 }}</strong>.</h5>
+            <h3 class="text-success fw-bold">Safe Travels and Have a Great Trip!</h3>
+        </div>
+    </div>
+    
+
+    <!-- ALL TRIPS -->
+    <!--  Default rendered -->
+    {% elif page_obj %}
+    <div class="container-fluid px-2 py-2">
+        <div class="bg-light rounded shadow-sm p-3">
+            <h5 class="text-center py-3 text-primary" id="all_plans">All Generated Plans</h5>
+            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                <table class="table table-hover table-bordered table-striped align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="text-center" scope="col">Trip ID</th>
+                            <th class="text-center" scope="col">District</th>
+                            <th class="text-center" scope="col">Fort Names</th>
+                            <th class="text-center" scope="col">Required Time</th>
+                            <th class="text-center" scope="col">Travel Cost</th>
+                            <th class="text-center" scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for trip in page_obj %}
+                        <tr>
+                            <td class="text-center" scope="row">{{ forloop.counter }}</td>
+                            <td class="text-center">{{ trip.trip_district }}</td>
+                            <td class="text-center">{{ trip.forts_visited }}</td>
+                            <td class="text-center">{{ trip.required_time }}</td>
+                            <td class="text-center">{{ trip.minimum_cost }}</td>
+                            <td class="text-center">{{ trip.date }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <!-- Pagination -->
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center flex-wrap">
+                {% if page_obj.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1&scroll_id=all_plans">&laquo; first</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&scroll_id=all_plans">previous</a></li>
+                {% endif %}
+        
+                <span class="ms-2 me-2">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} 
+                </span>
+        
+                {% if page_obj.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&scroll_id=all_plans">next</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&scroll_id=all_plans">last &raquo;</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+
+    </div>
+    
+
+    {% endif %}
+
+
+
+
+{% endblock %}
+
+

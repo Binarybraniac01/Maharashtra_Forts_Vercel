@@ -1,0 +1,44 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local and production environment settings
+.env
+*.env
+
+# Secret files and keys
+config/settings/local.py
+config/settings/production.py
+
+# Virtual Environment directory
+venv/
+env/
+
+# Static and media files
+# staticfiles/
+# media/
+
+# Logs and runtime files
+*.log
+*.pot
+*.pid
+*.pyc
+*.pyo
+*.coverage
+*.cover
+.coverage.*
+.cache/
+
+
+# Django cache files and other temporary files
+*.cache
+*.mo
+*.sass-cache/
+*.tmp
+*.DS_Store
+*.swp
+*.swo
+
+
+# Others

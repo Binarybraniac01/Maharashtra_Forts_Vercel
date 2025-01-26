@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page }}</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="#">Register</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="/" class="btn btn-light btn-sm me-2">Back</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card shadow-lg p-4 col-lg-5 col-md-7 col-sm-9 w-100">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post" action="/register-page/">
+                {% csrf_token %}
+                <h2 class="text-center fw-bold text-primary">Register</h2>
+                <hr>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="text" required name="email" id="email" class="form-control" placeholder="Enter your Email Id">
+                </div>
+                <div class="mb-3">
+                    <label for="inputusername" class="form-label">Username</label>
+                    <input type="text" required name="username" id="inputusername" class="form-control" placeholder="Choose a username">
+                </div>
+                <div class="mb-3">
+                    <label for="inputpass" class="form-label">Password</label>
+                    <input type="password" required name="password" id="inputpass" class="form-control" placeholder="Choose a password">
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+                <p class="text-center mt-3">Already have an account? 
+                    <a href="/login-page/" class="text-primary text-decoration-underline">Login</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

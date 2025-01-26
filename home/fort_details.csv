@@ -1,0 +1,98 @@
+district,fort_name,lat,lon,link
+Nashik,Ahivant Fort,20.41544444,73.86,https://en.wikipedia.org/wiki/Ahivant_Fort
+Ahmednagar,Ahmednagar Fort,19.09480556,74.75547222,https://en.wikipedia.org/wiki/Ahmednagar_Fort
+Satara,Ajinkyatara,17.67236111,73.99538889,https://en.wikipedia.org/wiki/Ajinkyatara
+Solapur,Akluj Fort,17.89419444,75.02269444,https://en.wikipedia.org/wiki/Akluj_Fort
+Akola,Akola Fort,20.706225,76.990019,https://en.wikipedia.org/wiki/Akola_Fort
+Nashik,Anjaneri,19.92,73.57,https://en.wikipedia.org/wiki/Anjaneri
+Palghar,Arnala fort,19.46577,72.73247,https://en.wikipedia.org/wiki/Arnala_fort
+Palghar,Asheri fort,19.82041667,72.92111111,https://en.wikipedia.org/wiki/Asheri_fort
+Akola,Balapur Fort,20.670309,76.7737,https://en.wikipedia.org/wiki/Balapur_Fort
+Aurangabad,Daulatabad Fort,19.942724,75.213164,https://en.wikipedia.org/wiki/Daulatabad_Fort
+Nashik,Dhodap,20.38558333,74.03088889,https://en.wikipedia.org/wiki/Dhodap
+Nashik,Dhunda fort,20.37208333,73.97058333,https://en.wikipedia.org/wiki/Dhunda_fort
+Thane,Durgadi Fort,19.2454,73.1186,https://en.wikipedia.org/wiki/Durgadi_Fort
+Amravati,Gawilghur,21.38222222,77.33388889,https://en.wikipedia.org/wiki/Gawilghur
+Thane,Ghodbunder Fort,19.2962,72.8883,https://en.wikipedia.org/wiki/Ghodbunder_Fort
+Ratnagiri,Gowalkot,17.54652778,73.48780556,https://en.wikipedia.org/wiki/Gowalkot
+Raigad,Irshalgad,18.933568,73.232031,https://en.wikipedia.org/wiki/Irshalgad
+Jalna,Jalna Fort,19.8433,75.8919,https://en.wikipedia.org/wiki/Jalna_Fort
+Palghar,Kaldurg Fort,19.6913,72.817,https://en.wikipedia.org/wiki/Kaldurg_Fort
+Thane,Kamandurg Fort,19.3825,72.95638889,https://en.wikipedia.org/wiki/Kamandurg_Fort
+Thane,Mahuli,19.4794792,73.2382754,https://en.wikipedia.org/wiki/Mahuli
+Nashik,Mangi-Tungi,20.84222222,74.08444444,https://en.wikipedia.org/wiki/Mangi-Tungi
+Sindhudurg,Pargad,15.81649,74.04562,https://en.wikipedia.org/wiki/Pargad
+Satara,Pavangad,11.323,75.764,https://en.wikipedia.org/wiki/Pavangad
+Ratnagiri,Prachitgad,17.22611111,73.69166667,https://en.wikipedia.org/wiki/Prachitgad
+Ahmednagar,Ratangad,19.5,73.69,https://en.wikipedia.org/wiki/Ratangad
+Dhule,Songir,21.08333333,74.78333333,https://en.wikipedia.org/wiki/Songir
+Latur,Udgir Fort,18.4028,77.1178,https://en.wikipedia.org/wiki/Udgir_Fort
+Gadchiroli,Vairagad Fort,20.43244444,80.09169444,https://en.wikipedia.org/wiki/Vairagad_Fort
+Sindhudurg,Yashwantgad Fort,15.7529,73.6657,https://en.wikipedia.org/wiki/Yashwantgad_Fort
+Ahmednagar,Harishchandragad,19.388239,73.77594,https://en.wikipedia.org/wiki/Harishchandragad
+Kolhapur,Gagangad,16.5432,73.8185,https://en.wikipedia.org/wiki/Gagangad
+Kolhapur,Shivgad,16.413,73.84230556,https://en.wikipedia.org/wiki/Shivgad
+Mumbai,Bombay Castle,18.93194444,72.83777778,https://en.wikipedia.org/wiki/Bombay_Castle
+Palghar,Fort Vasai,19.33027778,72.815,https://en.wikipedia.org/wiki/Fort_Vasai
+Mumbai,Sion Hillock Fort,19.0467,72.8677,https://en.wikipedia.org/wiki/Sion_Hillock_Fort
+Nashik,Achala Fort,20.43172222,73.81525,https://en.wikipedia.org/wiki/Achala_Fort
+Nashik,Ankai Fort,20.18722222,74.44763889,https://en.wikipedia.org/wiki/Ankai_Fort
+Nashik,Bahula Fort,19.86844444,73.70408333,https://en.wikipedia.org/wiki/Bahula_Fort
+Nashik,Chandwad fort,20.33683333,74.25916667,https://en.wikipedia.org/wiki/Chandwad_fort
+Nashik,Javlya fort,20.37416667,73.95752778,https://en.wikipedia.org/wiki/Javlya_fort
+Nashik,Madangad Fort,19.5896,73.6492,https://en.wikipedia.org/wiki/Madangad_Fort
+Nashik,Malegaon Fort,20.54538889,74.52988889,https://en.wikipedia.org/wiki/Malegaon_Fort
+Nashik,Mulher,20.78138889,74.06388889,https://en.wikipedia.org/wiki/Mulher
+Dhule,Rajdher fort,20.38663889,74.19444444,https://en.wikipedia.org/wiki/Rajdher_fort
+Nashik,Ravlya Fort,20.37208333,73.97058333,https://en.wikipedia.org/wiki/Ravlya_Fort
+Nashik,Tankai fort,20.19127778,74.45455556,https://en.wikipedia.org/wiki/Tankai_fort
+Nashik,Tringalwadi,19.73777778,73.53633333,https://en.wikipedia.org/wiki/Tringalwadi
+Nashik,Trymbakgad,19.91969444,73.51897222,https://en.wikipedia.org/wiki/Trymbakgad
+Palghar,Bhavangad Fort,19.58427778,72.74663889,https://en.wikipedia.org/wiki/Bhavangad_Fort
+Palghar,Kelve Fort,19.61808333,72.72827778,https://en.wikipedia.org/wiki/Kelve_Fort
+Palghar,Shirgaon Fort,19.69616667,72.7135,https://en.wikipedia.org/wiki/Shirgaon_Fort
+Palghar,Tarapur fort,19.8637,72.6821,https://en.wikipedia.org/wiki/Tarapur_fort
+Pune,Chavand fort,19.236848,73.748217,"https://en.wikipedia.org/wiki/Chavand,_Maharashtra"
+Pune,Dhak Bahiri,18.87488889,73.42833333,https://en.wikipedia.org/wiki/Dhak_Bahiri
+Pune,Indori fort,18.73605556,73.71408333,https://en.wikipedia.org/wiki/Indori_fort
+Pune,Jivdhan,19.2774432,73.6867189,https://en.wikipedia.org/wiki/Jivdhan
+Pune,Korigad,18.62027778,73.38555556,https://en.wikipedia.org/wiki/Korigad
+Pune,Lohagad,18.70888889,73.47666667,https://en.wikipedia.org/wiki/Lohagad
+Pune,Malhargad,18.41222222,74.04888889,https://en.wikipedia.org/wiki/Malhargad
+Pune,Purandar Fort,18.28333333,73.98333333,https://en.wikipedia.org/wiki/Purandar_Fort
+Pune,Rajgad Fort,18.2459862,73.6821929,https://en.wikipedia.org/wiki/Rajgad_Fort
+Pune,Rajmachi,18.825799,73.3955267,https://en.wikipedia.org/wiki/Rajmachi
+Pune,Rohida fort,18.10277778,73.82083333,https://en.wikipedia.org/wiki/Rohida_fort
+Pune,Shaniwar Wada,18.519075,73.85545,https://en.wikipedia.org/wiki/Shaniwar_Wada
+Pune,Sinhagad,18.36566389,73.75526944,https://en.wikipedia.org/wiki/Sinhagad
+Pune,Torna Fort,18.27607222,73.62271667,https://en.wikipedia.org/wiki/Torna_Fort
+Pune,Tung Fort,18.660273,73.463142,https://en.wikipedia.org/wiki/Tung_Fort
+Raigad,Avchitgad,18.47411111,73.11863889,https://en.wikipedia.org/wiki/Avchitgad
+Raigad,Birwadi fort,18.4241,73.0413,https://en.wikipedia.org/wiki/Birwadi_fort
+Raigad,Kalavantin Durg,18.98284,73.219892,https://en.wikipedia.org/wiki/Kalavantin_Durg
+Raigad,Mangad Fort,18.312113,73.350877,https://en.wikipedia.org/wiki/Mangad_Fort
+Raigad,Murud-Janjira,18.299589,72.964425,https://en.wikipedia.org/wiki/Murud-Janjira
+Raigad,Padmadurg,18.322135,72.932755,https://en.wikipedia.org/wiki/Padmadurg
+Raigad,Prabalgad,18.971193,73.225293,https://en.wikipedia.org/wiki/Prabalgad
+Raigad,Raigad Fort,18.2335,73.4406,https://en.wikipedia.org/wiki/Raigad_Fort
+Raigad,Sarasgad,18.557,73.2182,https://en.wikipedia.org/wiki/Sarasgad
+Raigad,Sudhagad,18.54,73.32,https://en.wikipedia.org/wiki/Sudhagad
+Raigad,Surgad,18.45338889,73.22616667,https://en.wikipedia.org/wiki/Surgad
+Ratnagiri,Anjanvel Fort,17.57147222,73.15180556,https://en.wikipedia.org/wiki/Anjanvel_Fort
+Ratnagiri,Bankot fort,17.97322222,73.04252778,https://en.wikipedia.org/wiki/Bankot_fort
+Palghar,Dativare fort,19.51416667,72.77222222,https://en.wikipedia.org/wiki/Dativare_fort
+Ratnagiri,Fattegad,17.81552778,73.09061111,https://en.wikipedia.org/wiki/Fattegad
+Ratnagiri,Goa Fort,17.81552778,73.09061111,https://en.wikipedia.org/wiki/Goa_Fort
+Ratnagiri,Purnagad,16.80802778,73.31491667,https://en.wikipedia.org/wiki/Purnagad
+Ratnagiri,Ratnagiri Fort,16.99619444,73.27027778,"https://en.wikipedia.org/wiki/Ratnagiri_Fort,_Maharashtra"
+Ratnagiri,Vijaygad Fort,17.30411111,73.24069444,https://en.wikipedia.org/wiki/Vijaygad_Fort
+Sindhudurg,Nivati fort,15.939,73.51163889,https://en.wikipedia.org/wiki/Nivati_fort
+Sindhudurg,Sindhudurg Fort,16.043769,73.461416,https://en.wikipedia.org/wiki/Sindhudurg_Fort
+Satara,Bhushangad,17.4648,74.4063,https://en.wikipedia.org/wiki/Bhushangad
+Satara,Jangali Jayagad,17.45355556,73.69377778,https://en.wikipedia.org/wiki/Jangali_Jayagad
+Satara,Kamalgad,17.96727778,73.74519444,https://en.wikipedia.org/wiki/Kamalgad
+Satara,Makrandgad,17.84933333,73.60338889,https://en.wikipedia.org/wiki/Makrandgad
+Satara,Pratapgad,17.936224,73.577607,https://en.wikipedia.org/wiki/Pratapgad
+Satara,Sajjangad,17.64956298,73.91216813,https://en.wikipedia.org/wiki/Sajjangad
+Satara,Vandan Fort,17.83908333,74.03480556,https://en.wikipedia.org/wiki/Vandan_Fort
+Nagpur,Sitabuldi Fort,21.14833333,79.085,https://en.wikipedia.org/wiki/Sitabuldi_Fort

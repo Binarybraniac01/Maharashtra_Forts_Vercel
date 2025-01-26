@@ -1,0 +1,284 @@
+{% extends "layout.html" %}
+{% block body %}
+
+
+
+        <!-- Hero Section Start-->
+        <div class="container-fluid bg-primary py-5 mb-2 hero-header" id="cust_hero">
+            <div class="container py-5">
+                <div class="row justify-content-center py-5">
+                    <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
+                        <h1 class="display-3 text-white mb-3 animate-fade-in">
+                            Explore the Majestic Forts of Maharashtra
+                        </h1>
+                        <p class="fs-4 text-white mb-4 animate-fade-in">
+                            Tour Maharashtra - Your Ultimate Guide to Maharashtra's Rich Fort Heritage
+                        </p>
+                        <div class="position-relative mx-auto search-bar-container animate-slide-up">
+                            <form id="search-form" method="post">
+                                {% csrf_token %}
+                                <!-- <input 
+                                    id="first-input" 
+                                    class="form-control custom-input rounded-pill py-3 ps-4 pe-5" 
+                                    name="user_district" 
+                                    type="text" 
+                                    placeholder="Enter District Name"
+                                > -->
+
+                                <div class="autoComplete_wrapper position-relative">
+                                    <input id="autoComplete" type="search" name="user_district" 
+                                            dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off">
+                                    <button 
+                                        type="submit"
+                                        id="searchButton" 
+                                        class="btn btn-light rounded-pill py-1 px-2 position-absolute top-50 translate-middle-y end-0 me-2 w-auto" 
+                                        form="search-form" 
+                                        formaction="/">
+                                        Search
+                                    </button> <!-- id is required for -->
+                                </div>
+                                <!-- above name was not originally in autocomplte div(it does not require it as its default is query)  
+                                    its for finding forts based on district the home_view code -->
+
+                            </form>
+                            <!-- <button 
+                                type="submit" 
+                                class="btn btn-light rounded-pill py-2 px-4 position-absolute top-50 translate-middle-y end-0 me-2 w-auto" 
+                                form="search-form" 
+                                formaction="/">
+                                Search
+                            </button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hero Section Start-->
+
+
+
+
+
+<!-- Service Start-->
+{% if found == "found" %}
+<div class="container-fluid rounded py-5 bg-light mb-2" id="forts_found">
+    <div class="container py-4 bg-white rounded shadow-lg">
+        <h1 class="text-center fw-bold mb-4">Forts You Can Visit in {{ user_district }}</h1>
+
+        <div id="output-area" class="bg-light p-4 rounded shadow-sm" style="display: '{{ display }}';">
+            <form id="generate-tour" method="post">
+                {% csrf_token %}
+
+                <!-- Forts List -->
+                <div class="row row-cols-2 row-cols-md-3 g-3 mb-4">
+                    {% for fort in fortsname %}
+                    <div class="col">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="{{ fort.fort_name }}" value="{{ fort.fort_id }}" name="selected_checkbox">
+                            <label class="form-check-label" for="{{ fort.fort_name }}">{{ fort.fort_name }}</label>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Mileage and Cost Inputs -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <label class="input-group-text" for="milage">Vehicle Mileage</label>
+                            <input type="text" id="milage" name="milage" placeholder="20" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <label class="input-group-text" for="liter">Cost Per Liter</label>
+                            <input type="text" id="liter" name="p_liter" placeholder="104.89" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Location and Submit Buttons -->
+                <div class="row justify-content-center align-items-center text-center">
+                    <div class="col-md-6 mb-3">
+                        <button id="get-user-location" type="button" class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
+                            </svg>
+                            Use Current Location
+                        </button>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <button type="submit" class="btn btn-primary rounded-pill w-100" form="generate-tour" formaction="/generateplan/" id="Submit_btn">
+                            Generate Plan
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Service End -->
+
+
+
+<!--gives alert if user enters wrong district-->
+{% elif found == "nodata" %}
+<div class="alert alert-warning border-start border-warning shadow-lg rounded-3 p-4 mb-4 position-relative" role="alert" id="alert">
+    <h4 class="alert-heading fw-bold text-warning">No Data Found!</h4>
+    <p class="text-dark">Please ensure the district name is correct and try again.</p>
+    <hr class="border-warning mb-3">
+    <p class="mb-0 text-muted">We couldn't find any matching data for the provided district.</p>
+</div>
+
+{% elif ltlg == "nolocation" %}
+    <div class="alert alert-info border-start border-info shadow-lg rounded-3 p-4 mb-4 position-relative" role="alert" id="alert">
+        <h4 class="alert-heading fw-bold text-info">No Location Found!</h4>
+        <p class="text-dark">Please click on 'Use Current Location' next time before generating the plan.</p>
+        <hr class="border-info mb-3">
+        <p class="mb-0 text-muted">We couldn't detect your location. Try again with location enabled.</p>
+    </div>
+
+    {% if fort_sel == "none" %}
+    <div class="alert alert-danger border-start border-danger shadow-lg rounded-3 p-4 mb-4 position-relative" role="alert" id="alert">
+        <h4 class="alert-heading fw-bold text-danger">No Fort Selected!</h4>
+        <p class="text-dark">Please select the forts you want to visit before generating the plan.</p>
+        <hr class="border-danger mb-3">
+        <p class="mb-0 text-muted">You must choose at least one fort to proceed with the plan.</p>
+    </div>
+    {% endif %}
+
+{% elif fort_sel == "none" %}
+<div class="alert alert-danger border-start border-danger shadow-lg rounded-3 p-4 mb-4 position-relative" role="alert" id="alert">
+    <h4 class="alert-heading fw-bold text-danger">No Fort Selected!</h4>
+    <p class="text-dark">Please select the forts you want to visit next time before generating the plan.</p>
+    <hr class="border-danger mb-3">
+    <p class="mb-0 text-muted">Don't forget to choose your forts for the next plan generation!</p>
+</div>
+
+
+
+<!-- tried inheritance but as the start it checks if it is found and does not execute the query, goes directly to else-->
+<!--Shown when user submits fort and personal location-->
+{% elif triggerplan == "trigger" %}
+<!-- Generated Travel Plan Section -->
+<div class="container-fluid py-5 bg-light" id="generatedplan">
+    <h1 class="text-center fw-bold text-primary mb-5">Your Travel Plan is Ready!</h1>
+
+    {% load custom_filters %}
+    <div class="row g-4">
+        {% for plan, item in info_box|zip_lists:items %}
+        <div class="col-12 col-md-6">
+            <div class="travel-card shadow-lg {% if forloop.counter|divisibleby:2 %}slide-in-left{% else %}slide-in-right{% endif %}">
+                <div class="travel-card-body">
+                    <h5 class="text-success fw-bold mb-3">From {{ plan.0 }} to {{ plan.1 }}</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><strong>Distance:</strong> {{ plan.2 }}</li>
+                        <li class="mb-2"><strong>Travel Time:</strong> {{ plan.3 }}</li>
+                        <li class="mb-2">{{ plan.4 }}</li>
+                        <li class="mb-3">{{ plan.5 }}</li>
+                    </ul>
+                    <button 
+                        type="button" 
+                        data-item="{{ item }}" 
+                        class="btn btn-primary w-100" 
+                        onclick="showDirections(this)">
+                        Get Directions
+                    </button>
+                </div>
+                <div class="travel-card-footer text-white text-center">
+                    <small>Plan #{{ forloop.counter }}</small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Summary Section -->
+<div class="container-fluid py-5">
+    <div class="bg-white p-4 rounded shadow text-center">
+        <h4 class="text-primary mb-3">Total Road Trip Time: <strong>{{ total_travel_time }}</strong></h4>
+        {% if estimated_days == 1 %}
+        <h5 class="mb-3">Estimated Time to Complete Trip: <strong>{{ estimated_days }} Day</strong>.</h5>
+        {% elif estimated_days > 1 %}
+        <h5 class="mb-3">Estimated Time to Complete Trip: <strong>{{ estimated_days }} Days</strong>.</h5>
+        {% endif %}
+        <h5 class="mb-3">Fuel Requirement: <strong>{{ total_f_c.0 }} Liters</strong>.</h5>
+        <h5 class="mb-4">Travel Expense: <strong>₹{{ total_f_c.1 }}</strong>.</h5>
+        <h3 class="text-success fw-bold">Safe Travels and Have a Great Trip!</h3>
+    </div>
+</div>
+
+
+
+
+<!--  Default rendered to show user what to do  at home page-->
+{% else %}
+<div class="alert alert-success shadow-lg rounded-3 p-4 mb-4 position-relative" role="alert">
+    <h4 class="alert-heading fw-bold text-success mb-3 animate__animated animate__fadeIn">Discover the Majestic Forts!</h4>
+    <p class="text-dark mb-3 animate__animated animate__fadeInUp">
+        Plan your road trip with comprehensive guidance and all the essential information for a hassle-free journey.
+    </p>
+    <hr class="border-success mb-3">
+    <p class="mb-0 text-muted">
+        Explore the beauty of Maharashtra’s forts and make your travel experience unforgettable.
+    </p>
+</div>
+
+
+{% endif %}
+
+
+
+
+
+<!-- For Autocomplte -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Fetch search list from Django
+        async function fetchSearchList(query) {
+            try {
+                const response = await fetch(`/search/?q=${query}`);
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                const data = await response.json();
+                return data.results; // Assuming the Django response has a `results` key
+            } catch (error) {
+                console.error("Error fetching search list:", error);
+                return [];
+            }
+        }
+
+        // Initialize autoComplete.js
+        const autoCompleteJS = new autoComplete({
+            selector: "#autoComplete", // Attach to the input element by ID
+            placeHolder: "Search for district...",
+            data: {
+                src: async (query) => {
+                    return await fetchSearchList(query);
+                },
+                cache: false,
+            },
+            resultItem: {
+                highlight: true,
+            },
+            events: {
+                input: {
+                    selection: (event) => {
+                        const selection = event.detail.selection.value;
+                        autoCompleteJS.input.value = selection;
+                        document.getElementById("searchButton").click();
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,42 @@
+<!-- 
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        
+    </style> -->
+
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="container-fluid bg-primary hero-header " style="height:95px" id="hero_image"></div>
+
+    <div class="container my-5">
+        <div class="text-center mb-4">
+            <h1 class="display-6">Wikipedia Viewer</h1>
+            <p class="lead">Browse Wikipedia content seamlessly within this page.</p>
+        </div>
+        <div class="card shadow-lg">
+            <div class="card-header bg-primary text-white">
+                <strong>Enjoy Reading More About Forts</strong>
+            </div>
+            <div class="card-body p-0">
+                <iframe src="{{link}}" title="Wikipedia Page" style="border: none; height: 80vh; width: 100%;">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- <h2>Click a link to load content in the iframe:</h2> -->
+    
+    <!-- Links with target attribute -->
+    <!-- <a href="https://www.example.com" target="myIframe">Load Example.com</a>
+    <a href="https://www.wikipedia.org" target="myIframe">Load Wikipedia</a> -->
+
+    <!-- Iframe -->
+    <!-- <iframe name="myIframe" width="600" height="400" style="border: 1px solid #000;">
+        Your browser does not support iframes.
+    </iframe> -->
+
+{% endblock %}

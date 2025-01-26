@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="container-fluid bg-primary hero-header " style="height:95px" id="hero_image"></div>
+
+<div class="container my-4">
+    <!-- Dropdown and Search Bar -->
+    <div class="d-flex flex-wrap justify-content-center align-items-center mb-5 gap-3">
+        <form method="post" action="/searchfortname/">
+            {% csrf_token %}
+            <div class="input-group w-auto">
+                <input type="text" class="form-control" placeholder="Search fort name" name="fortname">
+                <button class="btn btn-primary">Search</button>
+    
+            </div>
+        </form>
+        <div class="container d-flex flex-wrap justify-content-center">
+            <div class="dropdown">
+                <button class="btn border rounded-2 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Choose District
+                </button>
+                <ul class="dropdown-menu overflow-auto" style="max-height: 200px;">
+                    {% for dist in all_districts %}
+                    <li><a class="dropdown-item" href="/getdistforts/{{dist}}">{{dist}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Horizontal Cards -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+        {% for data in page_obj %}
+        <div class="col">
+            <div class="card h-100">
+                <div class="row g-0">
+                    <div class="col-4">
+                        <img src="/media/{{data.fort_image}}" class="img-fluid rounded-start" alt="{{data.fort_name}} Image">
+                    </div>
+                    <div class="col-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{data.fort_name}}</h5>
+                            <p>District : {{data.fort_district}}</p>
+                            <a class="icon-link icon-link-hover" href="/viewmore/{{data.fort_name}}">
+                                View More
+                                <svg class="bi" aria-hidden="true"><use xlink:href="#arrow-right"></use></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+
+    <!-- Pagination -->
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center flex-wrap">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a></li>
+            {% endif %}
+    
+            <span class="ms-2 me-2">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} 
+            </span>
+    
+            {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
+
+{% endblock %}
