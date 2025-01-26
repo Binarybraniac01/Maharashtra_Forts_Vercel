@@ -20,7 +20,7 @@ import math
 import os
 import sys
 
-
+from decouple import config
 
 from django.http import JsonResponse
 
@@ -262,7 +262,7 @@ def generateplan(request):
 
                         # Put together request
                         # This is your demo token
-                        token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzdhZDQwZjRmZjE0MWYwMGQ3NGIyYmMiLCJpYXQiOjE3MzYxMDI5Mjd9.QqnUFDWkIoBuaD9GmGVJuViqxCuAun78iwTFysVTDWg'
+                        token = config("ROUTE_API")
 
                         http = urllib3.PoolManager()
                         req = http.request('POST', URL, body=json.dumps(data),
@@ -361,7 +361,7 @@ def generateplan(request):
                     # main function to calculate distance
                     BASE_URL = "https://api.distancematrix.ai"
 
-                    API_KEY = 'XAApAsen6SsKxTH0GPHUSVACCzRpHCYdgg9pKuVETQiuTRWvmVnU2iMjEiEVMRvi' 
+                    API_KEY = config("DISTANCE_API")
                     #h7umDGRk3n0JI4RA1Zm1fkFRFnp1sFiEUYAysjrURSuPBZpZh2Db4gMPSHLTSUdc#
                     # Loading data from database
                     def load_data():

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import dj_database_url
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,14 +22,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&_mgb)fh90t73iq59lzy%*&_(p9%_j7tj38vn_k-0c@_^=lcac'
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True #check for debug to be false or true
+DEBUG = config("DEBUG", cast=bool)  #check for debug to be false or true
 
 ALLOWED_HOSTS = ['*'] #maharashtraforts.my.to
+# ALLOWED_HOSTS = config("ALLOWED_HOST").split(",")    #  for multiple allowed host, dont use * in production
 # if not DEBUG:
-#     ALLOWED_HOSTS += [os.environ.get('ALLOWED_HOST')] # allowed hosts are required when debug is false 
+#     ALLOWED_HOSTS += [config("ALLOWED_HOST")] # allowed hosts are required when debug is false 
 
 
 # Application definition
@@ -78,20 +80,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'forts_database',
-#         'USER' : 'root',
-#         'PASSWORD' : 'root',
-#         'HOST' : 'localhost',
-#         'PORT' : '3306'
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -99,7 +87,7 @@ DATABASES = {
     }
 }
 
-DATABASES["default"] = dj_database_url.parse("postgresql://root:OElEiPwcTbJ745HfLDwBeajoPPiBg3zK@dpg-cuad6oogph6c739v1g6g-a.oregon-postgres.render.com/maharashtra_forts")
+DATABASES["default"] = dj_database_url.parse(config("DATABASE"))
 
 
 
@@ -160,5 +148,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'maharashtraforts.official@gmail.com'
-EMAIL_HOST_PASSWORD = 'uufd ilvy gbcn eeeu'
+EMAIL_HOST_USER = config("Mail_USERNAME")
+EMAIL_HOST_PASSWORD = config("Mail_PASS")
