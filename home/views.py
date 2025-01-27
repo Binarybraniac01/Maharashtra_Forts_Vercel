@@ -70,11 +70,12 @@ def home_view(request):
         
         data = request.POST
         # Get user district name from the submited form
-        user_district = data.get('user_district')
+        input_district = data.get('user_district')
+        user_district=input_district.capitalize()
         print(user_district)
 
         # Get district_name from database
-        fortsname = Forts.objects.filter(fort_district=user_district)
+        fortsname = Forts.objects.filter(fort_district=user_district) # gives all forts that is in that district
         if fortsname:
             # declaring district name for later use
             # global district_name
@@ -83,9 +84,9 @@ def home_view(request):
             # adding district of current user
             if request.user.is_authenticated:
                 user_data, created = UserData.objects.get_or_create(user=request.user)
-                user_data.user_district = user_district
-                user_data.curr_lat = 0.0
-                user_data.curr_log = 0.0
+                user_data.user_district = user_district  #fortsname[0].fort_district
+                # user_data.curr_lat = 0.0
+                # user_data.curr_log = 0.0
                 user_data.save()
 
             # variable for showing container or simple text
@@ -112,8 +113,10 @@ def home_view(request):
 def send_coordinates(request):
     if request.method == "POST":
 
-        usr_latitude = request.POST.get("latitude")
-        usr_longitude = request.POST.get("longitude")
+        # Parse JSON body
+        body = json.loads(request.body.decode('utf-8'))
+        usr_latitude = body.get("latitude")
+        usr_longitude = body.get("longitude")
         print(usr_latitude)
         print(usr_longitude)
 
@@ -125,24 +128,19 @@ def send_coordinates(request):
         user_lat_long.save()
         print("Co-ordinated recieved")
 
-        # Deleting user locations table
-        # user_location.objects.all().delete()
-        # new_user_lat_long = user_location.objects.create(user_latitude=usr_latitude, user_longitude=usr_longitude)
-        # new_user_lat_long.save()
-
         # adding data in Userdata table
         user_data = UserData.objects.get(user=request.user)
         user_data.curr_lat = usr_latitude
         user_data.curr_log = usr_longitude
         user_data.save()
 
-        # deleting route table data
-        Route.objects.filter(user= request.user).delete()
-        print("deleted route table vales ")
+        # # deleting route table data
+        # Route.objects.filter(user= request.user).delete()
+        # print("deleted route table vales ")
 
-        # deleting result table data
-        Result.objects.filter(user= request.user).delete()
-        print("deleted result table vales ")
+        # # deleting result table data
+        # Result.objects.filter(user= request.user).delete()
+        # print("deleted result table vales ")
 
         data = {"success_msg": "Coordinates recieved successfully!"} # json response need data argument for the our data to load
 
@@ -696,6 +694,15 @@ def generateplan(request):
 
                     triggerplan = "trigger"
                     ltlg = "none"
+
+                    # Performing Deletion for next cycle
+                    # deleting route table data
+                    Route.objects.filter(user= request.user).delete()
+                    print("deleted route table vales ")
+
+                    # deleting result table data
+                    Result.objects.filter(user= request.user).delete()
+                    print("deleted result table vales ")
 
                     return render(request, "index.html", context= {"triggerplan":triggerplan, "active1":"active", "ltlg":ltlg, "fort_sel":fort_sel, "info_box":info_box, "items":data, "total_travel_time":total_travel_time, "estimated_days":estimated_days, "fuel_n_cost":fuel_n_cost, "total_f_c":total_f_c})
 

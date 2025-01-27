@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function () {
   // Get references to the spinner and feedback form
   const spinner_ = document.getElementById('spinner');
@@ -69,6 +70,64 @@ document.addEventListener("DOMContentLoaded", function () {
             element.scrollIntoView({ behavior: "smooth" });
         }
     }
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  const button = document.getElementById("get-user-location");
+  const spinner = document.getElementById("spinner");
+  const Sub_btn = document.getElementById('Submit_btn');
+
+  if (button) {
+    button.addEventListener("click", function() {
+      Sub_btn.disabled = true;  // disables generate plan until loaction is received
+
+      if (!navigator.geolocation) {
+          alert("Geolocation is not supported by your browser.");
+          return;
+      }
+
+      navigator.geolocation.getCurrentPosition(function(position) {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+          // Show the loading indicator
+          spinner.classList.add('show');
+
+          // Send coordinates to Django using Fetch API
+          fetch("send-coordinates/", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+                  "X-CSRFToken": csrfToken
+              },
+              body: JSON.stringify({ latitude, longitude })
+          })
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error("Network response was not ok");
+              }
+              return response.json();
+          })
+          .then(data => {
+              console.log(data.success_msg);
+
+              // Hide the loading indicator
+              spinner.classList.remove('show');
+              Sub_btn.disabled = false;
+          })
+          .catch(error => {
+              console.error("Error sending geolocation data:", error);
+              alert("An error occurred while sending your location.");
+          });
+      }, function(error) {
+          console.error("Error getting geolocation:", error);
+          alert("Error getting your location. Please check your browser settings.");
+      });
+  });
+  }
+
 });
 
 
@@ -160,41 +219,41 @@ function showDirections(button) {
 
 
 
-$(document).ready(function() {
-    $("#get-user-location").click(function() {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            let latitude = position.coords.latitude;
-            let longitude = position.coords.longitude;
-            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+// $(document).ready(function() {
+//     $("#get-user-location").click(function() {
+//         navigator.geolocation.getCurrentPosition(function(position) {
+//             let latitude = position.coords.latitude;
+//             let longitude = position.coords.longitude;
+//             const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-            // Show loading indicator
-            // $('#user-loc-animation').show();
-            $('#spinner').addClass('show');
+//             // Show loading indicator
+//             // $('#user-loc-animation').show();
+//             $('#spinner').addClass('show');
 
-            // Send coordinates to djabgo using AJAX 
-            $.ajax({
-                url: "send-coordinates/",
-                type: "POST",
-                headers: {
-                  'X-CSRFToken': csrfToken  // Add the CSRF token here
-                },
-                data: {
-                    latitude: latitude,
-                    longitude: longitude,
-                },
-                dataType : "json",
-                success: function(response) {
-                      console.log(response.success_msg);
+//             // Send coordinates to djabgo using AJAX 
+//             $.ajax({
+//                 url: "send-coordinates/",
+//                 type: "POST",
+//                 headers: {
+//                   'X-CSRFToken': csrfToken  // Add the CSRF token here
+//                 },
+//                 data: {
+//                     latitude: latitude,
+//                     longitude: longitude,
+//                 },
+//                 dataType : "json",
+//                 success: function(response) {
+//                       console.log(response.success_msg);
 
-                      $('#spinner').removeClass('show');
-                }
-            });
-        }, function(error) {
-            console.error("Error getting geolocation:", error);
-            alert("Error getting your location. Please check your browser settings.");
-        });
-    });
-});
+//                       $('#spinner').removeClass('show');
+//                 }
+//             });
+//         }, function(error) {
+//             console.error("Error getting geolocation:", error);
+//             alert("Error getting your location. Please check your browser settings.");
+//         });
+//     });
+// });
 
 
 

@@ -683,6 +683,15 @@ def recom_generateplan(request):
                     triggerplan = "trigger"
                     ltlg = "none"
 
+                    # Performing Deletion for next cycle
+                    # deleting route table data
+                    Route.objects.filter(user= request.user).delete()
+                    print("deleted route table vales ")
+
+                    # deleting result table data
+                    Result.objects.filter(user= request.user).delete()
+                    print("deleted result table vales ")
+
                     return render(request, "ourplans.html", context= {"tbl_data":tbl_data, "triggerplan":triggerplan, "active2":"active", "ltlg":ltlg, "fort_sel":fort_sel, "info_box":info_box, "items":data, "total_travel_time":total_travel_time, "estimated_days":estimated_days, "fuel_n_cost":fuel_n_cost, "total_f_c":total_f_c})
 
                 else:
