@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 
 from .models import *
 
+import uuid
+
 
 # @login_required(login_url="/login-page/")
 
@@ -33,8 +35,10 @@ def register_page(request):
         
         user.set_password(password)
         user.save()
-        messages.info(request, "User registration successfull. You can LOG IN now !")
-        return redirect('/login-page/')
+        # messages.info(request, "User registration successfull. You can LOG IN now !")
+        # return redirect('/login-page/')
+        login(request, user)
+        return redirect('/')
 
     return render(request, "register.html", context={"page": "Register"})
 
@@ -69,4 +73,14 @@ def logout_view(request):
     return redirect('/login-page/')
 
 
+def guest_acc(request):
 
+    username = uuid.uuid4()
+    password = str(uuid.uuid4())
+
+    user = User.objects.create(username=username)    
+    user.set_password(password)
+    user.save()
+
+    login(request, user)
+    return redirect("/")
