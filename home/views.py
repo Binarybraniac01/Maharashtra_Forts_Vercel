@@ -715,3 +715,7 @@ def generateplan(request):
     except Exception as e:
         print(e)
         return render(request, "504.html")
+
+
+
+

@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from home.utils import *
+
 from home.views import *
 from user.views import *
 from recommendations.views import *
@@ -50,7 +52,9 @@ urlpatterns = [
     path('login-page/', login_page),
     path('guest-acc/', guest_acc),
     path('logout/', logout_view),
-    path('admin/', admin.site.urls)
+    path('admin/', admin.site.urls),
+
+    path('keep-db-alive/', keep_db_alive, name='keep_db_alive')
 ]
 
 

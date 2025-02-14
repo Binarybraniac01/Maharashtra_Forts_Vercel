@@ -63,3 +63,14 @@ def lat_long_transfer():
             matrix_fort_longitude = i.fort_longitude
         )
 
+
+from django.http import JsonResponse
+from django.db import connection
+
+def keep_db_alive(request):
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1;")  # Simple query to keep DB active
+        return JsonResponse({"status": "success", "message": "Database is awake!"})
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)})
