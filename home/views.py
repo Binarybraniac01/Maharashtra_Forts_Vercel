@@ -135,12 +135,12 @@ def send_coordinates(request):
         user_data.save()
 
         # # deleting route table data
-        # Route.objects.filter(user= request.user).delete()
-        # print("deleted route table vales ")
+        Route.objects.filter(user= request.user).delete()
+        print("deleted route table vales ")
 
         # # deleting result table data
-        # Result.objects.filter(user= request.user).delete()
-        # print("deleted result table vales ")
+        Result.objects.filter(user= request.user).delete()
+        print("deleted result table vales ")
 
         data = {"success_msg": "Coordinates recieved successfully!"} # json response need data argument for the our data to load
 
