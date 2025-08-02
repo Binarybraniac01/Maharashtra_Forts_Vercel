@@ -7,7 +7,7 @@ gunicorn
 idna
 packaging
 pillow
-psycopg2
+psycopg2-binary
 python-decouple
 requests
 sqlparse
