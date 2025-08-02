@@ -27,7 +27,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", cast=bool)  #check for debug to be false or true
 
-ALLOWED_HOSTS = ['*'] #maharashtraforts.my.to
+ALLOWED_HOSTS = ['.vercel.app','localhost','127.0.0.1','.now.sh'] #['*'] #maharashtraforts.my.to
 # ALLOWED_HOSTS = config("ALLOWED_HOST").split(",")    #  for multiple allowed host, dont use * in production
 # if not DEBUG:
 #     ALLOWED_HOSTS += [config("ALLOWED_HOST")] # allowed hosts are required when debug is false 
