@@ -144,6 +144,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR , 'public/static')
 ]
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles_build')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' # Add this line for making whitenoise production ready and not confilct with vercel
 
 
 MEDIA_URL = '/media/'
