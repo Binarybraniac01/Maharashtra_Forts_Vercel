@@ -74,3 +74,37 @@ def keep_db_alive(request):
         return JsonResponse({"status": "success", "message": "Database is awake!"})
     except Exception as e:
         return JsonResponse({"status": "error", "message": str(e)})
+
+
+    """
+    Iterates through fort images, removes spaces from their filenames,
+    renames the files on the filesystem, and updates the corresponding
+    database records.
+    """
+    count = 0
+    # Define the directory where images are stored
+    image_dir = os.path.join(settings.MEDIA_ROOT, 'img', 'fort_images')
+
+    for filename in os.listdir(image_dir):
+        # Proceed only if there is a space in the filename
+        if ' ' in filename:
+            # --- 1. Prepare Paths and New Filename ---
+            old_path = os.path.join(image_dir, filename)
+            new_filename = filename.replace(' ', '')
+            new_path = os.path.join(image_dir, new_filename)
+
+            # --- 2. Rename the Physical File ---
+            os.rename(old_path, new_path)
+
+            # --- 3. Update the Database Record ---
+            # Get the fort name from the original filename (before removing spaces)
+            base_name, ext = os.path.splitext(filename)
+            fort_obj = Forts.objects.filter(fort_name__icontains=base_name).first()
+            
+            if fort_obj:
+                # Update the image field with the new filename path
+                fort_obj.fort_image = f"img/fort_images/{new_filename}"
+                fort_obj.save()
+                count += 1
+                
+    print(f"Successfully updated and renamed {count} files.")
