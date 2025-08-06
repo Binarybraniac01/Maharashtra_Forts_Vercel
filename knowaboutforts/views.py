@@ -52,10 +52,13 @@ def searchfortname(request):
 
 @login_required(login_url="/login-page/")
 def viewmore(request, fortname):
-    # Need to remove url encoding while getting fort name
+
     from urllib.parse import unquote
-    decoded_fortname = unquote(fortname)
-    print('fort name :',fortname)
+    # The URL is double-encoded, so unquote twice.
+    # 1. 'Ahmednagar%2520Fort' -> 'Ahmednagar%20Fort'
+    # 2. 'Ahmednagar%20Fort'   -> 'Ahmednagar Fort'
+    decoded_fortname = unquote(unquote(fortname))    
+    print('fort name :',decoded_fortname)
     
     fort_info = Forts.objects.get(fort_name=decoded_fortname)
     print('fort info:', fort_info)
