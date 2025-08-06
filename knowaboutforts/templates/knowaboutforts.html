@@ -41,7 +41,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{data.fort_name}}</h5>
                             <p>District : {{data.fort_district}}</p>
-                            <a class="icon-link icon-link-hover" href="/viewmore/{{data.fort_name}}">
+                            <a class="icon-link icon-link-hover" href="/viewmore/{{data.fort_name|safe}}">
                                 View More
                                 <svg class="bi" aria-hidden="true"><use xlink:href="#arrow-right"></use></svg>
                             </a>

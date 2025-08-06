@@ -52,7 +52,7 @@ def searchfortname(request):
 
 @login_required(login_url="/login-page/")
 def viewmore(request, fortname):
-    fortname = fortname.replace("Fort", " Fort") # updated because the RaigadFort -> raigad Fort
+    # fortname = fortname.replace("Fort", " Fort") # updated because the RaigadFort -> raigad Fort
     print('fort name :',fortname)
     fort_info = Forts.objects.get(fort_name=fortname)
     print('fort info:', fort_info)
