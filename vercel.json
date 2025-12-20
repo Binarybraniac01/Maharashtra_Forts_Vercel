@@ -18,5 +18,11 @@
           "src": "/(.*)",
           "dest": "core/wsgi.py"
       }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/",
+      "schedule": "0 10 * * *"
+    }
   ]
 }

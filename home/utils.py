@@ -67,7 +67,7 @@ def lat_long_transfer():
 from django.http import JsonResponse
 from django.db import connection
 
-def keep_db_alive(request):
+def image_name_change(request):
     try:
         with connection.cursor() as cursor:
             cursor.execute("SELECT 1;")  # Simple query to keep DB active
@@ -108,3 +108,6 @@ def keep_db_alive(request):
                 count += 1
                 
     print(f"Successfully updated and renamed {count} files.")
+
+
+

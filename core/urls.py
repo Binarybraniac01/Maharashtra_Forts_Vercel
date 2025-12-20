@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 
 from home.utils import *
+from home.mycronjob import *
 
 from home.views import *
 from user.views import *
@@ -54,7 +55,7 @@ urlpatterns = [
     path('logout/', logout_view),
     path('admin/', admin.site.urls),
 
-    path('keep-db-alive/', keep_db_alive, name='keep_db_alive')
+    path('api/cron/', cron_ping, name='cron_ping'),
 ]
 
 
