@@ -14,7 +14,7 @@
             {% for item in tbl_data %}
             <div class="carousel-item {% if forloop.first %}active{% endif %}">
                 <div class="card">
-                    <div class="img-wrapper rounded-start"><img src="/media/{{item.image_name}}" class="d-block w-100" alt="No Picture Found"> </div>
+                    <div class="img-wrapper rounded-start"><img src="/static/{{item.image_name}}" class="d-block w-100" alt="No Picture Found"> </div>
                     <div class="card-body">
                         <h5 class="card-title">{{item.recom_title}}</h5>
                         <p class="card-text">{{ item.recom_details|truncatechars:100 }}</p>
