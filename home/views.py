@@ -125,7 +125,7 @@ def send_coordinates(request):
 
         # Inserting user location to database
         latitude_longitude.objects.create(user=request.user, origin_latitude=usr_latitude, origin_longitude=usr_longitude)
-        print("Co-ordinated recieved")
+        print("Coordinates received")
 
         # adding data in Userdata table
         user_data = UserData.objects.get(user=request.user)

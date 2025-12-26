@@ -142,7 +142,8 @@ def recommdirection(request):
 
     # getting fort names and id
     fort_string = direc_data.recom_forts
-    forts_list = eval(fort_string) # fort_string contaions list as string eg. "[..data..] ", so converts it to list
+    import ast
+    forts_list = ast.literal_eval(fort_string) # fort_string contains list as string eg. "[..data..] ", so converts it to list
     print(forts_list)
 
     # Batch fetch all forts at once to avoid N+1 queries
