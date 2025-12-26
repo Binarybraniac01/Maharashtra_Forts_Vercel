@@ -64,11 +64,20 @@ def ourplans(request):
             # print(planned_trips_dist)
 
             random_dist = random.sample(planned_trips_dist, min(5, len(planned_trips_dist)))
+            
+            # Batch fetch all forts for selected districts at once to avoid N+1 queries
+            all_district_forts = Forts.objects.filter(fort_district__in=random_dist)
+            forts_by_district = {}
+            for fort in all_district_forts:
+                if fort.fort_district not in forts_by_district:
+                    forts_by_district[fort.fort_district] = []
+                forts_by_district[fort.fort_district].append(fort)
+            
             recommend_dist_fort = []
             # Loop either 5 times or the number of unique districts, whichever is smaller
             for a in random_dist:
                 f_names = []
-                district_forts = Forts.objects.filter(fort_district= a)
+                district_forts = forts_by_district.get(a, [])
                 for b in district_forts:
                     f_names.append(b.fort_name)
 
@@ -78,6 +87,10 @@ def ourplans(request):
                     recommend_dist_fort.append((a, fort_names))
             
             print(recommend_dist_fort)
+
+            # Pre-fetch all fort images needed for recommendations
+            all_fort_names_for_images = [fort_name for _, fort_names in recommend_dist_fort for fort_name in fort_names]
+            forts_with_images = {f.fort_name: f for f in Forts.objects.filter(fort_name__in=all_fort_names_for_images)}
 
             n = 1
             for i in recommend_dist_fort:
@@ -92,11 +105,11 @@ def ourplans(request):
                         )
                 # To choose random element from list (fortname)
                 img_name = random.choice(fort_names)
-                img_obj = Forts.objects.filter(fort_name=img_name).first()
-                recom_img = img_obj.fort_image
+                img_obj = forts_with_images.get(img_name)
+                recom_img = img_obj.fort_image if img_obj else None
                 n += 1 
                 
-                recommendation = all_recommendations.objects.create(
+                all_recommendations.objects.create(
                     user = request.user,
                     recom_district = district,
                     recom_forts = fort_names,
@@ -104,7 +117,6 @@ def ourplans(request):
                     recom_details = details,
                     image_name = recom_img
                 )
-                recommendation.save()
 
     tbl_data = all_recommendations.objects.filter(user=request.user)
     
@@ -130,14 +142,18 @@ def recommdirection(request):
 
     # getting fort names and id
     fort_string = direc_data.recom_forts
-    forts_list = eval(fort_string) # fort_string contaions list as string eg. "[..data..] ", so converts it to list
+    import ast
+    forts_list = ast.literal_eval(fort_string) # fort_string contains list as string eg. "[..data..] ", so converts it to list
     print(forts_list)
 
-    fortsname =[]
+    # Batch fetch all forts at once to avoid N+1 queries
+    forts_dict = {f.fort_name: f for f in Forts.objects.filter(fort_name__in=forts_list)}
+    fortsname = []
 
     for i in forts_list:
-        get_data = Forts.objects.filter(fort_name=i).first()
-        fortsname.append((get_data.fort_id, get_data.fort_name)) # todo: Unable to get fort id or any data
+        get_data = forts_dict.get(i)
+        if get_data:
+            fortsname.append((get_data.fort_id, get_data.fort_name))
 
     return render(request, "ourplans.html", context= {"active2":active2, "tbl_data":tbl_data, "direc_data":direc_data, "found":found, "fortsname":fortsname})
 
@@ -219,9 +235,14 @@ def recom_generateplan(request):
 
                         fleet.update(temp_fleet)
 
+                        # Batch fetch all selected forts at once to avoid N+1 queries
+                        forts_dict = {str(fort.fort_id): fort for fort in Forts.objects.filter(fort_id__in=selected_forts)}
+                        
                         for i in selected_forts:
                             # print(i)
-                            user_sel_fort = Forts.objects.filter(fort_id=i).first()
+                            user_sel_fort = forts_dict.get(str(i))
+                            if not user_sel_fort:
+                                continue
 
                             user_sel_fort_lat = user_sel_fort.fort_latitude
                             user_sel_fort_long = user_sel_fort.fort_longitude
@@ -283,6 +304,10 @@ def recom_generateplan(request):
                     count = 0
                     old_value = ""
 
+                    # Pre-fetch all fort ids from path_id_name to avoid N+1 queries
+                    fort_ids_in_path = [new_id for new_id, _ in path_id_name if new_id != "depot"]
+                    forts_in_path = {str(f.fort_id): f for f in Forts.objects.filter(fort_id__in=fort_ids_in_path)}
+
                     for new_id, name in path_id_name:
                         if new_id == "depot":
                             # print(new_id)
@@ -290,7 +315,9 @@ def recom_generateplan(request):
                         else:
                             # print(new_id)
                             print("got plan functionality")
-                            user_sel_fort1 = Forts.objects.filter(fort_id=new_id).first()
+                            user_sel_fort1 = forts_in_path.get(str(new_id))
+                            if not user_sel_fort1:
+                                continue
                             user_sel_fort_lat1 = user_sel_fort1.fort_latitude
                             user_sel_fort_long1 = user_sel_fort1.fort_longitude
 
@@ -302,9 +329,8 @@ def recom_generateplan(request):
                                 user_g_lat_long1.destination_longitude = user_sel_fort_long1
                                 user_g_lat_long1.save()
 
-                                new_user_lat_long1 = latitude_longitude.objects.create(user=request.user, origin_latitude=user_sel_fort_lat1,
+                                latitude_longitude.objects.create(user=request.user, origin_latitude=user_sel_fort_lat1,
                                                                         origin_longitude=user_sel_fort_long1)
-                                new_user_lat_long1.save()
 
                                 old_value = str(user_sel_fort_lat1)
                                 count = count + 1
@@ -316,9 +342,8 @@ def recom_generateplan(request):
                                 new_plan.destination_longitude = user_sel_fort_long1
                                 new_plan.save()
 
-                                new_plan_lat_long = latitude_longitude.objects.create(user=request.user, origin_latitude=user_sel_fort_lat1,
+                                latitude_longitude.objects.create(user=request.user, origin_latitude=user_sel_fort_lat1,
                                                                     origin_longitude=user_sel_fort_long1)
-                                new_plan_lat_long.save()
 
                                 old_value = str(user_sel_fort_lat1)
                                 count = count + 1
@@ -338,10 +363,9 @@ def recom_generateplan(request):
                             o_lt_lg = f"{o_lt},{o_lg}"
                             d_lt_lg = f"{d_lt},{d_lg}"
 
-                            fill_data = Route.objects.create(user=request.user, origin=o_lt_lg, destination=d_lt_lg, mode="driving",
+                            Route.objects.create(user=request.user, origin=o_lt_lg, destination=d_lt_lg, mode="driving",
                                             traffic_model="best_guess",
                                             departure_time="now")
-                            fill_data.save()
 
                     # Commit once after all the additions
                     # db.session.commit()
@@ -442,7 +466,6 @@ def recom_generateplan(request):
                                 duration_in_traffic_value=dm_duration_in_traffic['value'],
                                 duration_in_traffic_text=dm_duration_in_traffic['text']
                             )
-                            result.save()
 
                     # calling function
                     main()
@@ -503,6 +526,15 @@ def recom_generateplan(request):
                     else:
                         price_per_liter = 104.89  # price per liter
 
+                    # Move function outside of loop for efficiency
+                    def calculate_petrol_cost(distance, price_per_liter, average_mileage):
+                        # Calculate required petrol in liters
+                        required_petrol = distance / average_mileage
+
+                        # Calculate total cost
+                        cost = required_petrol * price_per_liter
+
+                        return required_petrol, cost
 
                     for d in d_val:
                         # d = "25.7 km"
@@ -510,17 +542,8 @@ def recom_generateplan(request):
                         numerical_value = d.split()[0]
                         distance = float(numerical_value)
 
-                        def calculate_petrol_cost(distance, price_per_liter):
-                            # Calculate required petrol in liters
-                            required_petrol = distance / AVERAGE_MILEAGE
-
-                            # Calculate total cost
-                            cost = required_petrol * price_per_liter
-
-                            return required_petrol, cost
-
                         # Calculate and display results
-                        required_petrol, total_cost = calculate_petrol_cost(distance, price_per_liter)
+                        required_petrol, total_cost = calculate_petrol_cost(distance, price_per_liter, AVERAGE_MILEAGE)
 
                         # for getting total
                         t_f = t_f + required_petrol
@@ -678,7 +701,6 @@ def recom_generateplan(request):
                     user = request.user
 
                     trip_data = all_trips.objects.create(user=user, user_name=str(user), trip_district=district_name, forts_visited=forts_visited_string, required_time=req_time, minimum_cost=total_cost, date=current_date)
-                    trip_data.save()
 
                     triggerplan = "trigger"
                     ltlg = "none"
