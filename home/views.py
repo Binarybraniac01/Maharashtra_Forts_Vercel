@@ -33,9 +33,9 @@ def search_api(request):
     # Filtering items from  database
     if query:
         results = list(
-            set(Forts.objects.filter(fort_district__icontains=query)
+            Forts.objects.filter(fort_district__icontains=query)
             .values_list('fort_district', flat=True)
-            .distinct()[:10])  
+            .distinct()[:10]
         )
 
         """
@@ -124,8 +124,7 @@ def send_coordinates(request):
         latitude_longitude.objects.filter(user= request.user).delete()
 
         # Inserting user location to database
-        user_lat_long = latitude_longitude.objects.create(user=request.user, origin_latitude=usr_latitude, origin_longitude=usr_longitude)
-        user_lat_long.save()
+        latitude_longitude.objects.create(user=request.user, origin_latitude=usr_latitude, origin_longitude=usr_longitude)
         print("Co-ordinated recieved")
 
         # adding data in Userdata table
@@ -228,9 +227,14 @@ def generateplan(request):
 
                         fleet.update(temp_fleet)
 
+                        # Batch fetch all selected forts at once to avoid N+1 queries
+                        forts_dict = {str(fort.fort_id): fort for fort in Forts.objects.filter(fort_id__in=selected_forts)}
+                        
                         for i in selected_forts:
                             # print(i)
-                            user_sel_fort = Forts.objects.filter(fort_id=i).first()
+                            user_sel_fort = forts_dict.get(str(i))
+                            if not user_sel_fort:
+                                continue
 
                             user_sel_fort_lat = user_sel_fort.fort_latitude
                             user_sel_fort_long = user_sel_fort.fort_longitude
@@ -292,6 +296,10 @@ def generateplan(request):
                     count = 0
                     old_value = ""
 
+                    # Pre-fetch all fort ids from path_id_name to avoid N+1 queries
+                    fort_ids_in_path = [new_id for new_id, _ in path_id_name if new_id != "depot"]
+                    forts_in_path = {str(f.fort_id): f for f in Forts.objects.filter(fort_id__in=fort_ids_in_path)}
+
                     for new_id, name in path_id_name:
                         if new_id == "depot":
                             # print(new_id)
@@ -299,7 +307,9 @@ def generateplan(request):
                         else:
                             # print(new_id)
                             print("got plan functionality")
-                            user_sel_fort1 = Forts.objects.filter(fort_id=new_id).first()
+                            user_sel_fort1 = forts_in_path.get(str(new_id))
+                            if not user_sel_fort1:
+                                continue
                             user_sel_fort_lat1 = user_sel_fort1.fort_latitude
                             user_sel_fort_long1 = user_sel_fort1.fort_longitude
 
@@ -311,9 +321,8 @@ def generateplan(request):
                                 user_g_lat_long1.destination_longitude = user_sel_fort_long1
                                 user_g_lat_long1.save()
 
-                                new_user_lat_long1 = latitude_longitude.objects.create(user=request.user, origin_latitude=user_sel_fort_lat1,
+                                latitude_longitude.objects.create(user=request.user, origin_latitude=user_sel_fort_lat1,
                                                                         origin_longitude=user_sel_fort_long1)
-                                new_user_lat_long1.save()
 
                                 old_value = str(user_sel_fort_lat1)
                                 count = count + 1
@@ -325,9 +334,8 @@ def generateplan(request):
                                 new_plan.destination_longitude = user_sel_fort_long1
                                 new_plan.save()
 
-                                new_plan_lat_long = latitude_longitude.objects.create(user=request.user, origin_latitude=user_sel_fort_lat1,
+                                latitude_longitude.objects.create(user=request.user, origin_latitude=user_sel_fort_lat1,
                                                                     origin_longitude=user_sel_fort_long1)
-                                new_plan_lat_long.save()
 
                                 old_value = str(user_sel_fort_lat1)
                                 count = count + 1
@@ -350,7 +358,6 @@ def generateplan(request):
                             fill_data = Route.objects.create(user=request.user, origin=o_lt_lg, destination=d_lt_lg, mode="driving",
                                             traffic_model="best_guess",
                                             departure_time="now")
-                            fill_data.save()
 
                     # Commit once after all the additions
                     # db.session.commit()
@@ -455,7 +462,6 @@ def generateplan(request):
                                 duration_in_traffic_value=dm_duration_in_traffic['value'],
                                 duration_in_traffic_text=dm_duration_in_traffic['text']
                             )
-                            result.save()
 
                     # calling function
                     main()
@@ -516,6 +522,15 @@ def generateplan(request):
                     else:
                         price_per_liter = 104.89  # price per liter
 
+                    # Move function outside of loop for efficiency
+                    def calculate_petrol_cost(distance, price_per_liter, average_mileage):
+                        # Calculate required petrol in liters
+                        required_petrol = distance / average_mileage
+
+                        # Calculate total cost
+                        cost = required_petrol * price_per_liter
+
+                        return required_petrol, cost
 
                     for d in d_val:
                         # d = "25.7 km"
@@ -523,17 +538,8 @@ def generateplan(request):
                         numerical_value = d.split()[0]
                         distance = float(numerical_value)
 
-                        def calculate_petrol_cost(distance, price_per_liter):
-                            # Calculate required petrol in liters
-                            required_petrol = distance / AVERAGE_MILEAGE
-
-                            # Calculate total cost
-                            cost = required_petrol * price_per_liter
-
-                            return required_petrol, cost
-
                         # Calculate and display results
-                        required_petrol, total_cost = calculate_petrol_cost(distance, price_per_liter)
+                        required_petrol, total_cost = calculate_petrol_cost(distance, price_per_liter, AVERAGE_MILEAGE)
 
                         # for getting total
                         t_f = t_f + required_petrol
@@ -690,7 +696,6 @@ def generateplan(request):
                     user = request.user
 
                     trip_data = all_trips.objects.create(user=user, user_name=str(user), trip_district=district_name, forts_visited=forts_visited_string, required_time=req_time, minimum_cost=total_cost, date=current_date)
-                    trip_data.save()
 
                     triggerplan = "trigger"
                     ltlg = "none"

@@ -18,8 +18,8 @@ class NullableModel(models.Model):
 
 class Forts(models.Model):
     fort_id = models.AutoField(primary_key=True)
-    fort_name = models.CharField(max_length=100)
-    fort_district = models.CharField(max_length=100)
+    fort_name = models.CharField(max_length=100, db_index=True)
+    fort_district = models.CharField(max_length=100, db_index=True)
     fort_latitude = models.FloatField(null=True, blank=True)
     fort_longitude = models.FloatField(null=True, blank=True)
     link = models.URLField()
