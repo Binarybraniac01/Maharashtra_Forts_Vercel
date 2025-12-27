@@ -1,6 +1,6 @@
 # 🏰 Maharashtra Forts Travel Planner
 
-**Comprehensive web application for efficient Maharashtra’s forts travel planning, offering detailed fort information, route optimization, and itinerary management.**
+**A smart itinerary planner for Maharashtra's forts featuring route optimization, cost estimation, and detailed trekking guides.**
 
 [![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://maharashtraforts.vercel.app/)
 [![Django](https://img.shields.io/badge/Built%20with-Django-092E20)](https://www.djangoproject.com/)
