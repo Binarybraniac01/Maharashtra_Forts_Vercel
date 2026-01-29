@@ -3,21 +3,21 @@
 
 
 
-        <!-- Hero Section Start-->
-        <div class="container-fluid bg-primary py-5 mb-2 hero-header" id="cust_hero">
-            <div class="container py-5">
-                <div class="row justify-content-center py-5">
-                    <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
-                        <h1 class="display-3 text-white mb-3 animate-fade-in">
-                            Explore the Majestic Forts of Maharashtra
-                        </h1>
-                        <p class="fs-4 text-white mb-4 animate-fade-in">
-                            Tour Maharashtra - Your Ultimate Guide to Maharashtra's Rich Fort Heritage
-                        </p>
-                        <div class="position-relative mx-auto search-bar-container animate-slide-up">
-                            <form id="search-form" method="post">
-                                {% csrf_token %}
-                                <!-- <input 
+<!-- Hero Section Start-->
+<div class="container-fluid bg-primary py-5 mb-2 hero-header" id="cust_hero">
+    <div class="container py-5">
+        <div class="row justify-content-center py-5">
+            <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
+                <h1 class="display-3 text-white mb-3 animate-fade-in">
+                    Explore the Majestic Forts of Maharashtra
+                </h1>
+                <p class="fs-4 text-white mb-4 animate-fade-in">
+                    Tour Maharashtra - Your Ultimate Guide to Maharashtra's Rich Fort Heritage
+                </p>
+                <div class="position-relative mx-auto search-bar-container animate-slide-up">
+                    <form id="search-form" method="post">
+                        {% csrf_token %}
+                        <!-- <input 
                                     id="first-input" 
                                     class="form-control custom-input rounded-pill py-3 ps-4 pe-5" 
                                     name="user_district" 
@@ -25,36 +25,33 @@
                                     placeholder="Enter District Name"
                                 > -->
 
-                                <div class="autoComplete_wrapper position-relative">
-                                    <input id="autoComplete" type="search" name="user_district" 
-                                            dir="ltr" spellcheck="false" autocorrect="off" autocomplete="off" autocapitalize="off">
-                                    <button 
-                                        type="submit"
-                                        id="searchButton" 
-                                        class="btn btn-light rounded-pill py-1 px-2 position-absolute top-50 translate-middle-y end-0 me-2 w-auto" 
-                                        form="search-form" 
-                                        formaction="/">
-                                        Search
-                                    </button> <!-- id is required for -->
-                                </div>
-                                <!-- above name was not originally in autocomplte div(it does not require it as its default is query)  
+                        <div class="autoComplete_wrapper position-relative">
+                            <input id="autoComplete" type="search" name="user_district" dir="ltr" spellcheck="false"
+                                autocorrect="off" autocomplete="off" autocapitalize="off">
+                            <button type="submit" id="searchButton"
+                                class="btn btn-light rounded-pill py-1 px-2 position-absolute top-50 translate-middle-y end-0 me-2 w-auto"
+                                form="search-form" formaction="/">
+                                Search
+                            </button> <!-- id is required for -->
+                        </div>
+                        <!-- above name was not originally in autocomplte div(it does not require it as its default is query)  
                                     its for finding forts based on district the home_view code -->
 
-                            </form>
-                            <!-- <button 
+                    </form>
+                    <!-- <button 
                                 type="submit" 
                                 class="btn btn-light rounded-pill py-2 px-4 position-absolute top-50 translate-middle-y end-0 me-2 w-auto" 
                                 form="search-form" 
                                 formaction="/">
                                 Search
                             </button> -->
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Hero Section Start-->
+    </div>
+</div>
+
+<!-- Hero Section Start-->
 
 
 
@@ -75,7 +72,8 @@
                     {% for fort in fortsname %}
                     <div class="col">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="{{ fort.fort_name }}" value="{{ fort.fort_id }}" name="selected_checkbox">
+                            <input class="form-check-input" type="checkbox" id="{{ fort.fort_name }}"
+                                value="{{ fort.fort_id }}" name="selected_checkbox">
                             <label class="form-check-label" for="{{ fort.fort_name }}">{{ fort.fort_name }}</label>
                         </div>
                     </div>
@@ -99,21 +97,26 @@
                 </div>
 
                 <div class="mb-2">
-                    <span class="fw-bold">Note:</span><span> Please click current location everytime you generatedplan.</span>
+                    <span class="fw-bold">Note:</span><span> Please click current location everytime you
+                        generatedplan.</span>
                 </div>
 
                 <!-- Location and Submit Buttons -->
                 <div class="row justify-content-center align-items-center text-center">
                     <div class="col-md-6 mb-3">
-                        <button id="get-user-location" type="button" class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
-                                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
+                        <button id="get-user-location" type="button"
+                            class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
                             </svg>
                             Use Current Location
                         </button>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <button type="submit" class="btn btn-primary rounded-pill w-100" form="generate-tour" formaction="/generateplan/" id="Submit_btn">
+                        <button type="submit" class="btn btn-primary rounded-pill w-100" form="generate-tour"
+                            formaction="/generateplan/" id="Submit_btn" disabled>
                             Generate Plan
                         </button>
                     </div>
@@ -128,7 +131,8 @@
 
 <!--gives alert if user enters wrong district-->
 {% elif found == "nodata" %}
-<div class="alert alert-warning border-start border-warning shadow-lg rounded-3 p-4 mb-4 position-relative" role="alert" id="alert">
+<div class="alert alert-warning border-start border-warning shadow-lg rounded-3 p-4 mb-4 position-relative" role="alert"
+    id="alert">
     <h4 class="alert-heading fw-bold text-warning">No Data Found!</h4>
     <p class="text-dark">Please ensure the district name is correct and try again.</p>
     <hr class="border-warning mb-3">
@@ -136,24 +140,27 @@
 </div>
 
 {% elif ltlg == "nolocation" %}
-    <div class="alert alert-info border-start border-info shadow-lg rounded-3 p-4 mb-4 position-relative" role="alert" id="alert">
-        <h4 class="alert-heading fw-bold text-info">No Location Found!</h4>
-        <p class="text-dark">Please click on 'Use Current Location' next time before generating the plan.</p>
-        <hr class="border-info mb-3">
-        <p class="mb-0 text-muted">We couldn't detect your location. Try again with location enabled.</p>
-    </div>
+<div class="alert alert-info border-start border-info shadow-lg rounded-3 p-4 mb-4 position-relative" role="alert"
+    id="alert">
+    <h4 class="alert-heading fw-bold text-info">No Location Found!</h4>
+    <p class="text-dark">Please click on 'Use Current Location' next time before generating the plan.</p>
+    <hr class="border-info mb-3">
+    <p class="mb-0 text-muted">We couldn't detect your location. Try again with location enabled.</p>
+</div>
 
-    {% if fort_sel == "none" %}
-    <div class="alert alert-danger border-start border-danger shadow-lg rounded-3 p-4 mb-4 position-relative" role="alert" id="alert">
-        <h4 class="alert-heading fw-bold text-danger">No Fort Selected!</h4>
-        <p class="text-dark">Please select the forts you want to visit before generating the plan.</p>
-        <hr class="border-danger mb-3">
-        <p class="mb-0 text-muted">You must choose at least one fort to proceed with the plan.</p>
-    </div>
-    {% endif %}
+{% if fort_sel == "none" %}
+<div class="alert alert-danger border-start border-danger shadow-lg rounded-3 p-4 mb-4 position-relative" role="alert"
+    id="alert">
+    <h4 class="alert-heading fw-bold text-danger">No Fort Selected!</h4>
+    <p class="text-dark">Please select the forts you want to visit before generating the plan.</p>
+    <hr class="border-danger mb-3">
+    <p class="mb-0 text-muted">You must choose at least one fort to proceed with the plan.</p>
+</div>
+{% endif %}
 
 {% elif fort_sel == "none" %}
-<div class="alert alert-danger border-start border-danger shadow-lg rounded-3 p-4 mb-4 position-relative" role="alert" id="alert">
+<div class="alert alert-danger border-start border-danger shadow-lg rounded-3 p-4 mb-4 position-relative" role="alert"
+    id="alert">
     <h4 class="alert-heading fw-bold text-danger">No Fort Selected!</h4>
     <p class="text-dark">Please select the forts you want to visit next time before generating the plan.</p>
     <hr class="border-danger mb-3">
@@ -173,7 +180,8 @@
     <div class="row g-4">
         {% for plan, item in info_box|zip_lists:items %}
         <div class="col-12 col-md-6">
-            <div class="travel-card shadow-lg {% if forloop.counter|divisibleby:2 %}slide-in-left{% else %}slide-in-right{% endif %}">
+            <div
+                class="travel-card shadow-lg {% if forloop.counter|divisibleby:2 %}slide-in-left{% else %}slide-in-right{% endif %}">
                 <div class="travel-card-body">
                     <h5 class="text-success fw-bold mb-3">From {{ plan.0 }} to {{ plan.1 }}</h5>
                     <ul class="list-unstyled">
@@ -182,10 +190,7 @@
                         <li class="mb-2">{{ plan.4 }}</li>
                         <li class="mb-3">{{ plan.5 }}</li>
                     </ul>
-                    <button 
-                        type="button" 
-                        data-item="{{ item }}" 
-                        class="btn btn-primary w-100" 
+                    <button type="button" data-item="{{ item }}" class="btn btn-primary w-100"
                         onclick="showDirections(this)">
                         Get Directions
                     </button>
@@ -220,7 +225,8 @@
 <!--  Default rendered to show user what to do  at home page-->
 {% else %}
 <div class="alert alert-success shadow-lg rounded-3 p-4 mb-4 position-relative" role="alert">
-    <h4 class="alert-heading fw-bold text-success mb-3 animate__animated animate__fadeIn">Discover the Majestic Forts!</h4>
+    <h4 class="alert-heading fw-bold text-success mb-3 animate__animated animate__fadeIn">Discover the Majestic Forts!
+    </h4>
     <p class="text-dark mb-3 animate__animated animate__fadeInUp">
         Plan your road trip with comprehensive guidance and all the essential information for a hassle-free journey.
     </p>
